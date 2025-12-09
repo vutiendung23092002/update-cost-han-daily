@@ -19,7 +19,7 @@ async function syncCostTiktokHanDaily(baseId, tableName, from, to) {
     ])
   );
 
-  utils.writeJsonFile("./src/data/kiot_cost_merged.json", mergedCost);
+  // utils.writeJsonFile("./src/data/kiot_cost_merged.json", mergedCost);
 
   const larkClient = await createLarkClient(
     env.LARK.tiktok_k_orders_items.app_id,
@@ -35,18 +35,8 @@ async function syncCostTiktokHanDaily(baseId, tableName, from, to) {
     console.log(`[LARK] Bảng '${tableName}' đã tồn tại.`);
     tableId = table.table_id;
   } else {
-    console.log(`[LARK] Tạo bảng '${tableName}' mới...`);
-
-    const fields = Object.entries(fieldMap).map(([key, label]) =>
-      utils.buildField(key, label, typeMap[key], uiType[key], currencyCode)
-    );
-
-    tableId = await larkbaseService.ensureLarkBaseTable(
-      larkClient,
-      baseId,
-      tableName,
-      fields
-    );
+    console.log(`[LARK] Bảng '${tableName}' không tồn tại.`);
+    return; // Nếu bảng ko tồn tại thì dừng
   }
   console.log("[LARK] Table id:", tableId);
 
