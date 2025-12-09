@@ -52,7 +52,7 @@ jobs:
           KIOT_SECRET_OLD: ${{ secrets.KIOT_SECRET_OLD}}
           LARK_TIKTOK_K_ORDER_ITEMS_APP_ID: ${{ secrets.LARK_TIKTOK_K_ORDER_ITEMS_APP_ID }}
           LARK_TIKTOK_K_ORDER_ITEMS_APP_SECRET: ${{ secrets.LARK_TIKTOK_K_ORDER_ITEMS_APP_SECRET }}
-          LARK_BASE_ID: ${{ vars.BASE_ID_TMDT }}
+          LARK_BASE_ID: ${{ vars.LARK_BASE_ID }}
           LARK_TABLE_NAME: ${{ inputs.LARK_TABLE_NAME || vars.LARK_TABLE_NAME }}
           FROM: ${{ inputs.FROM || vars.FROM }}
           TO: ${{ inputs.TO || vars.TO }}
