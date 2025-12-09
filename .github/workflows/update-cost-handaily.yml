@@ -1,0 +1,60 @@
+# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
+
+name: Nodejs update cost handaily
+
+on:
+  schedule:
+    - cron: "*/30 * * * *"
+  workflow_dispatch:
+    inputs:
+      LARK_TABLE_NAME:
+        description: "Tên bảng Orders Items Handaily"
+        required: true
+        type: string
+
+      FROM:
+        description: "Từ ngày (YYYY/MM/DD)"
+        required: true
+        type: string
+
+      TO:
+        description: "Đến ngày (YYYY/MM/DD)"
+        required: true
+        type: string
+
+jobs:
+  update-cost-job:
+    runs-on: ubuntu-latest
+    environment: update-cost-handaily
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm ci --only=production
+
+      - name: Run main.js
+        env:
+          AES_256_CBC_APP_SECRET_KEY: ${{ secrets.AES_256_CBC_APP_SECRET_KEY }}
+          DATABASE_SERVICE_KEY: ${{ secrets.DATABASE_SERVICE_KEY }}
+          KIOTVIET_RETAILER: ${{ secrets.KIOTVIET_RETAILER }}
+          KIOTVIET_RETAILER_OLD: ${{ secrets.KIOTVIET_RETAILER_OLD}}
+          KIOT_CLIENT_ID: ${{ secrets.KIOT_CLIENT_ID }}
+          KIOT_CLIENT_ID_OLD: ${{ secrets.KIOT_CLIENT_ID_OLD }}
+          KIOT_SECRET: ${{ secrets.KIOT_SECRET }}
+          KIOT_SECRET_OLD: ${{ secrets.KIOT_SECRET_OLD}}
+          LARK_TIKTOK_K_ORDER_ITEMS_APP_ID: ${{ secrets.LARK_TIKTOK_K_ORDER_ITEMS_APP_ID }}
+          LARK_TIKTOK_K_ORDER_ITEMS_APP_SECRET: ${{ secrets.LARK_TIKTOK_K_ORDER_ITEMS_APP_SECRET }}
+          LARK_BASE_ID: ${{ vars.BASE_ID_TMDT }}
+          LARK_TABLE_NAME: ${{ inputs.LARK_TABLE_NAME || vars.LARK_TABLE_NAME }}
+          FROM: ${{ inputs.FROM || vars.FROM }}
+          TO: ${{ inputs.TO || vars.TO }}
+
+        run: node main.js
