@@ -55,7 +55,7 @@ async function syncCostTiktokHanDaily(baseId, tableName, from, to) {
   const updatePayload = [];
 
   for (const rec of existingRecords) {
-    const sku = rec.fields?.sku?.toLowerCase();
+    const sku = rec.fields?.["Mã sản phẩm"]?.toLowerCase();
 
     if (!sku) continue; // Ko có SKU -> next
 
