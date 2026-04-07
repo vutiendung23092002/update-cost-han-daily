@@ -45,7 +45,7 @@ async function syncCostTiktokHanDaily(baseId, tableName, from, to) {
     baseId,
     tableId,
     1000,
-    "create_time",
+    "Ngày tạo đơn",
     from,
     to
   );
